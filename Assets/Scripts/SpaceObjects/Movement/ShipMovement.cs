@@ -42,7 +42,7 @@ namespace AsteroidsPlus.SpaceObjects.Movement
 			if (moveForward) _inertiaVector += forwardVector * _acceleration * Time.fixedDeltaTime;
 
 			//Speed limit
-			if (_inertiaVector.magnitude > _maxSpeed * Time.fixedDeltaTime) _inertiaVector = _inertiaVector.normalized * _maxSpeed * Time.fixedDeltaTime;
+			if (_inertiaVector.sqrMagnitude > _maxSpeed * Time.fixedDeltaTime) _inertiaVector = _inertiaVector.normalized * _maxSpeed * Time.fixedDeltaTime;
 
 			base.MoveFixedUpdate(movedTranform);
 		}

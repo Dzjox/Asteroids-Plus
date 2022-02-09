@@ -32,7 +32,7 @@ namespace AsteroidsPlus.SpaceObjects.Movement
 
 			for (int i = 0; i < _ways.Length; i++)
 			{
-				if (_beastWay.magnitude > _ways[i].magnitude) _beastWay = _ways[i];
+				if (_beastWay.sqrMagnitude > _ways[i].sqrMagnitude) _beastWay = _ways[i];
 			}
 		}
 	}

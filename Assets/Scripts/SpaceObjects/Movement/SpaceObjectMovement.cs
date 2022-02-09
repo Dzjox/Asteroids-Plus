@@ -27,7 +27,7 @@ namespace AsteroidsPlus.SpaceObjects.Movement
 
 		public void MoveFixedUpdate(Transform movedTranform)
 		{
-			_speed = _inertiaVector.magnitude / Time.fixedDeltaTime;
+			_speed = _inertiaVector.sqrMagnitude / Time.fixedDeltaTime;
 			_position += _inertiaVector;
 			movedTranform.position = _position;
 		}
