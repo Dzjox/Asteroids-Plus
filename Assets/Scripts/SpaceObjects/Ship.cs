@@ -1,6 +1,7 @@
 using AsteroidsPlus.Core;
 using AsteroidsPlus.Core.Interface;
 using AsteroidsPlus.SpaceObjects.Movement;
+using System;
 using UnityEngine;
 
 namespace AsteroidsPlus.SpaceObjects
@@ -16,8 +17,7 @@ namespace AsteroidsPlus.SpaceObjects
 		public Component MainWeapon;
 		public Component UltimateWeapon;
 
-		public delegate void Handler();
-		public event Handler ShipDestroyed;
+		public event Action ShipDestroyed;
 
 		public ShipMovement Movement { get { return _shipMovement; } }
 

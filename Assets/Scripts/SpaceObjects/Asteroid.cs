@@ -1,8 +1,10 @@
 using AsteroidsPlus.Core;
 using AsteroidsPlus.SpaceObjects.Movement;
 using AsteroidsPlus.SpaceObjects.Spawner;
+using System;
 using System.Collections;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace AsteroidsPlus.SpaceObjects
 {
@@ -11,8 +13,7 @@ namespace AsteroidsPlus.SpaceObjects
 		private SpaceObjectMovement _movemet = null;
 		private BorderTeleport _borderTeleport;
 
-		public delegate void Handler();
-		public static event Handler AsteroidDestroyed;
+		public static Action AsteroidDestroyed;
 
 		public Asteroid Launch(Vector2 startPosition)
 		{

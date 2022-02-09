@@ -1,12 +1,15 @@
 using AsteroidsPlus.Core;
+using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
+using Object = UnityEngine.Object;
+
 
 namespace AsteroidsPlus.SpaceObjects.Spawner
 {
 	public class AsteroidsSpawner
 	{
-		public delegate void Handler();
-		public static event Handler DestoryAllAsteroids;
+		public static Action DestoryAllAsteroids;
 
 		public void Spawn(Vector2 shipPostion, int asteroidsCount)
 		{

@@ -1,8 +1,10 @@
 using AsteroidsPlus.Core;
 using AsteroidsPlus.SpaceObjects;
 using AsteroidsPlus.SpaceObjects.Spawner;
+using System;
 using System.Collections;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace AsteroidsPlus.Logic
 {
@@ -15,9 +17,7 @@ namespace AsteroidsPlus.Logic
 			ShipDestroyed
 		}
 
-		public delegate void ChangeStatusHandler(Status status);
-		public static event ChangeStatusHandler ChangeStatus;
-
+		public static Action<Status> ChangeStatus;
 
 		private InputSystem _inputActions;
 		private AsteroidsSpawner _asteridsSpawner;

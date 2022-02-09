@@ -1,6 +1,7 @@
 using AsteroidsPlus.Core;
 using AsteroidsPlus.SpaceObjects.Movement;
 using AsteroidsPlus.SpaceObjects.Spawner;
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -12,8 +13,7 @@ namespace AsteroidsPlus.SpaceObjects
 		private BorderTeleport _borderTeleport;
 		private Transform _player;
 
-		public delegate void Handler();
-		public static event Handler UFODestroyed;
+		public static Action UFODestroyed;
 
 		public void Launch(Vector2 startPosition, Transform player)
 		{

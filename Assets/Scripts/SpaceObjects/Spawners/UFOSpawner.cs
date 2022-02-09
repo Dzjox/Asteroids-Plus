@@ -1,12 +1,14 @@
 using AsteroidsPlus.Core;
+using System;
 using UnityEngine;
+using Random = UnityEngine.Random;
+using Object = UnityEngine.Object;
 
 namespace AsteroidsPlus.SpaceObjects.Spawner
 {
 	public class UFOSpawner
 	{
-		public delegate void Handler();
-		public static event Handler DestoryAllUFO;
+		public static Action DestoryAllUFO;
 
 		public void Spawn(Transform player)
 		{
