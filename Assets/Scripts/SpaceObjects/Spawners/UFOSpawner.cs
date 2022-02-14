@@ -37,7 +37,7 @@ namespace AsteroidsPlus.SpaceObjects.Spawner
 			while (_spawnUFO)
 			{
 				await Task.Delay(TimeSpan.FromSeconds(Data.Instance().Settings.UFOSpawnTime));
-				if (_spawnUFO)
+				if (_spawnUFO && player!=null)
 					Spawn(player);
 			}
 		}

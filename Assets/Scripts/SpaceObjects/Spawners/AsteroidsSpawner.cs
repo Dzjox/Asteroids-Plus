@@ -38,18 +38,12 @@ namespace AsteroidsPlus.SpaceObjects.Spawner
 			int count = 0;
 			int asteroidsCount = 0;
 			var data = Data.Instance().Settings;
-			asteroidsCount = data.AsteroidsInFirstRound + (int)(count * data.AsteroidsCountWithTime);
-			Spawn(player.position, asteroidsCount);
-
-			while (_spawnAseroids)
+			while (_spawnAseroids && player!=null)
 			{
+				asteroidsCount = data.AsteroidsInFirstRound + (int)(count * data.AsteroidsCountWithTime);
+				Spawn(player.position, asteroidsCount);
+				count++;				
 				await Task.Delay(TimeSpan.FromSeconds(data.AsteroidsArrivalTime));
-				if (_spawnAseroids)
-				{
-					asteroidsCount = data.AsteroidsInFirstRound + (int)(count * data.AsteroidsCountWithTime);
-					Spawn(player.position, asteroidsCount);
-					count++;
-				}
 			}
 		}
 
