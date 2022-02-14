@@ -1,6 +1,5 @@
 using AsteroidsPlus.Core;
 using AsteroidsPlus.SpaceObjects.Movement;
-using System.Collections;
 using UnityEngine;
 
 namespace AsteroidsPlus.Weapon
@@ -9,6 +8,7 @@ namespace AsteroidsPlus.Weapon
 	{
 		private SpaceObjectMovement _movemet = null;
 		private BorderTeleport _borderTeleport;
+		private float _destroyTime;
 
 		public void Launch(Transform shipTransform)
 		{
@@ -19,21 +19,20 @@ namespace AsteroidsPlus.Weapon
 
 			_borderTeleport = new BorderTeleport(_movemet);
 
-			StartCoroutine(Fly(Data.Instance().Settings.MissleFlyTime));
+			_destroyTime = Time.time + Data.Instance().Settings.MissleFlyTime;
 		}
 
-		private IEnumerator Fly(float flyTime)
+		private void FixedUpdate()
 		{
-			var destroyTime = Time.time + flyTime;
-
-			do
+			if (_movemet != null)
 			{
 				_movemet.MoveFixedUpdate(transform);
-				if (_borderTeleport.Check()) _borderTeleport.Teleport();
-				yield return new WaitForFixedUpdate();
-			} while (destroyTime > Time.time);
+				if (_destroyTime < Time.time) Destroy(this.gameObject);				
+			}
 
-			Destroy(this.gameObject);
+			if (_borderTeleport != null)
+				if (_borderTeleport.Check())
+					_borderTeleport.Teleport();
 		}
 
 		private void OnTriggerEnter2D(Collider2D collision)

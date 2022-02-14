@@ -8,7 +8,7 @@ namespace AsteroidsPlus.SpaceObjects.Spawner
 {
 	public class UFOSpawner
 	{
-		public static Action DestoryAllUFO;
+		private static Action DestoryAllUFO;
 
 		public void Spawn(Transform player)
 		{
@@ -25,7 +25,7 @@ namespace AsteroidsPlus.SpaceObjects.Spawner
 
 			Object.Instantiate(Data.Instance().Settings.UFOPrefab, UFOPostion, Quaternion.identity)
 				.GetComponent<UFO>()
-				.Launch(UFOPostion, player);
+				.Launch(UFOPostion, player, DestoryAllUFO);
 
 		}
 

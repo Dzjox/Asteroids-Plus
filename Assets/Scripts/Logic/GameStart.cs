@@ -12,8 +12,8 @@ namespace AsteroidsPlus.Logic
 		private void Awake()
 		{
 			Data.Instance().AddSettings(_settings);
-			new RoundsLogic().Init();
-			new ScoreSystem().Init();
+			new RoundsLogic();
+			new ScoreSystem();
 		}
 	}
 }

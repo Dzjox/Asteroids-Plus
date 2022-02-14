@@ -9,7 +9,7 @@ namespace AsteroidsPlus.SpaceObjects.Spawner
 {
 	public class AsteroidsSpawner
 	{
-		public static Action DestoryAllAsteroids;
+		private Action _destoryAllAsteroids;
 
 		public void Spawn(Vector2 shipPostion, int asteroidsCount)
 		{
@@ -26,18 +26,18 @@ namespace AsteroidsPlus.SpaceObjects.Spawner
 					Random.Range(minY, maxY) + shipPostion.y,
 					0);
 
-				Object.Instantiate(Data.Instance().Settings.AsteroidPrefab, asteroidPostion, Quaternion.identity)
+					Object.Instantiate(Data.Instance().Settings.AsteroidPrefab, asteroidPostion, Quaternion.identity)
 					.GetComponent<Asteroid>()
-					.Launch(asteroidPostion);
+					.Launch(asteroidPostion, _destoryAllAsteroids);
 			}
 		}
 
-		public void SpawnMini(Vector2 asteroidPostion, int asteroidsCount, float scale = 1)
+		public void SpawnMini(Vector2 asteroidPostion, int asteroidsCount, Action destoryAllAsteroids, float scale = 0.3f)
 		{
 			for (int i = 0; i < asteroidsCount; i++)
 			{
 				var asteroid = Object.Instantiate(Data.Instance().Settings.AsteroidPrefab, asteroidPostion, Quaternion.identity);
-				asteroid.GetComponent<Asteroid>().Launch(asteroidPostion);
+				asteroid.GetComponent<Asteroid>().Launch(asteroidPostion , destoryAllAsteroids);
 				asteroid.transform.localScale *= scale;
 				asteroid.tag = "MiniAsteroid";
 			}
@@ -45,7 +45,7 @@ namespace AsteroidsPlus.SpaceObjects.Spawner
 
 		public void Clear()
 		{
-			DestoryAllAsteroids?.Invoke();
+			_destoryAllAsteroids?.Invoke();
 		}
 
 	}

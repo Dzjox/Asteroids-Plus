@@ -1,5 +1,6 @@
 ﻿using AsteroidsPlus.Core;
 using AsteroidsPlus.SpaceObjects;
+using System;
 
 namespace AsteroidsPlus.Logic
 {
@@ -20,10 +21,9 @@ namespace AsteroidsPlus.Logic
 			}
 		}
 
-		public delegate void ScoreHandler(int score);
-		public static event ScoreHandler ScoreChange;
+		public static Action<int> ScoreChange;
 
-		public void Init()
+		public ScoreSystem()
 		{
 			RoundsLogic.ChangeStatus += OnChangeStatus;
 			Asteroid.AsteroidDestroyed += OnAsteroidDestroyed;

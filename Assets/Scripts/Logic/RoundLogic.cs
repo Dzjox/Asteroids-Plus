@@ -26,8 +26,7 @@ namespace AsteroidsPlus.Logic
 		private Coroutine _steroidsSpawnCoroutine;
 		private Coroutine _UFOSpawnCoroutine;
 
-
-		public void Init()
+		public RoundsLogic()
 		{
 			_inputActions = new InputSystem();
 			_inputActions.Menu.Enable();
@@ -40,7 +39,6 @@ namespace AsteroidsPlus.Logic
 
 			ChangeStatus?.Invoke(Status.Idle);
 		}
-
 
 		private void OnPressAnyKey(UnityEngine.InputSystem.InputAction.CallbackContext context)
 		{

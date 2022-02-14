@@ -12,32 +12,28 @@ namespace AsteroidsPlus.SpaceObjects
 		private UFOMovement _movemet = null;
 		private BorderTeleport _borderTeleport;
 		private Transform _player;
+		private Action _destoryAllUFO;
 
 		public static Action UFODestroyed;
 
-		public void Launch(Vector2 startPosition, Transform player)
+		public void Launch(Vector2 startPosition, Transform player, Action destoryAllUFO)
 		{
 			_player = player;
 			_movemet = new UFOMovement(startPosition, 0, Data.Instance().Settings.UFOSpeed);
 			_borderTeleport = new BorderTeleport(_movemet);
-			StartCoroutine(Fly());
 
-			UFOSpawner.DestoryAllUFO += OnDestoryAllUFO;
+			_destoryAllUFO = destoryAllUFO;
+			_destoryAllUFO += OnDestoryAllUFO;
 		}
 
-		private void OnDestoryAllUFO()
+		private void FixedUpdate()
 		{
-			Destroy(this.gameObject);
-		}
+			if (_movemet != null)
+				_movemet.MoveFixedUpdate(transform);
 
-		private IEnumerator Fly()
-		{
-			do
-			{
-				_movemet.MoveFixedUpdate(transform, _player);
-				if (_borderTeleport.Check()) _borderTeleport.Teleport();
-				yield return new WaitForFixedUpdate();
-			} while (true);
+			if (_borderTeleport != null)
+				if (_borderTeleport.Check())
+					_borderTeleport.Teleport();
 		}
 
 		private void OnTriggerEnter2D(Collider2D collision)
@@ -49,9 +45,14 @@ namespace AsteroidsPlus.SpaceObjects
 			}
 		}
 
+		private void OnDestoryAllUFO()
+		{
+			Destroy(this.gameObject);
+		}
+
 		private void OnDestroy()
 		{
-			UFOSpawner.DestoryAllUFO -= OnDestoryAllUFO;
+			_destoryAllUFO -= OnDestoryAllUFO;
 		}
 
 	}

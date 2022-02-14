@@ -2,7 +2,6 @@ using AsteroidsPlus.Core;
 using AsteroidsPlus.SpaceObjects.Movement;
 using AsteroidsPlus.SpaceObjects.Spawner;
 using System;
-using System.Collections;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -11,11 +10,12 @@ namespace AsteroidsPlus.SpaceObjects
 	public class Asteroid : MonoBehaviour
 	{
 		private SpaceObjectMovement _movemet = null;
-		private BorderTeleport _borderTeleport;
+		private BorderTeleport _borderTeleport = null;
+		private Action _destoryAllAsteroids;
 
 		public static Action AsteroidDestroyed;
 
-		public Asteroid Launch(Vector2 startPosition)
+		public Asteroid Launch(Vector2 startPosition, Action DestoryAllAsteroids)
 		{
 			_movemet = new SpaceObjectMovement(
 				startPosition,
@@ -24,26 +24,20 @@ namespace AsteroidsPlus.SpaceObjects
 
 			_borderTeleport = new BorderTeleport(_movemet);
 
-			StartCoroutine(Fly());
-
-			AsteroidsSpawner.DestoryAllAsteroids += OnDestoryAllAsteroids;
+			_destoryAllAsteroids = DestoryAllAsteroids;
+			_destoryAllAsteroids += OnDestoryAllAsteroids;
 
 			return this;
 		}
 
-		private IEnumerator Fly()
+		private void FixedUpdate()
 		{
-			do
-			{
+			if (_movemet != null) 
 				_movemet.MoveFixedUpdate(transform);
-				if (_borderTeleport.Check()) _borderTeleport.Teleport();
-				yield return new WaitForFixedUpdate();
-			} while (true);
-		}
 
-		private void OnDestoryAllAsteroids()
-		{
-			Destroy(gameObject);
+			if (_borderTeleport!=null) 
+				if (_borderTeleport.Check()) 
+					_borderTeleport.Teleport();
 		}
 
 		private void OnTriggerEnter2D(Collider2D collision)
@@ -62,14 +56,24 @@ namespace AsteroidsPlus.SpaceObjects
 			}
 		}
 
+		private void OnDestoryAllAsteroids()
+		{
+			Destroy(gameObject);
+		}
+
 		private void OnDestroy()
 		{
-			AsteroidsSpawner.DestoryAllAsteroids -= OnDestoryAllAsteroids;
+			_destoryAllAsteroids -= OnDestoryAllAsteroids;
 		}
 
 		private void SpawnsMiniAsteroids()
 		{
-			new AsteroidsSpawner().SpawnMini(transform.position, Data.Instance().Settings.MiniAsteroidsCount, Data.Instance().Settings.MiniAsteroidsScale);
+			new AsteroidsSpawner()
+				.SpawnMini(
+					transform.position,
+					Data.Instance().Settings.MiniAsteroidsCount,
+					_destoryAllAsteroids,
+					Data.Instance().Settings.MiniAsteroidsScale);
 		}
 	}
 }
