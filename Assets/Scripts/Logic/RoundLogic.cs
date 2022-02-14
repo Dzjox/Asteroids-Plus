@@ -1,7 +1,6 @@
 using AsteroidsPlus.Core;
 using AsteroidsPlus.SpaceObjects;
 using AsteroidsPlus.SpaceObjects.Spawner;
-using System;
 using UnityEngine;
 
 namespace AsteroidsPlus.Logic
@@ -10,7 +9,9 @@ namespace AsteroidsPlus.Logic
 	{
 		private AsteroidsSpawner _asteridsSpawner;
 		private UFOSpawner _UFOSpawner;
-		private Transform _player;
+		private Transform _playerTransform;
+
+		public Ship PlayerShip;
 
 		public RoundsLogic(GameState gameState)
 		{
@@ -48,10 +49,11 @@ namespace AsteroidsPlus.Logic
 			_asteridsSpawner.Clear();
 			_UFOSpawner.Clear();
 
-			_player = GameObject.Instantiate(Data.Instance().Settings.ShipPrefab).transform;
+			PlayerShip = GameObject.Instantiate(Data.Instance().Settings.ShipPrefab).GetComponent<Ship>();
+			_playerTransform = PlayerShip.transform;
 
-			_asteridsSpawner.SpawnInTime(_player);
-			_UFOSpawner.SpawnInTime(_player);
+			_asteridsSpawner.SpawnInTime(_playerTransform);
+			_UFOSpawner.SpawnInTime(_playerTransform);
 		}
 
 		private void RoundEnd()

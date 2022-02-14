@@ -575,6 +575,7 @@ MonoBehaviour:
   _gameStart: {fileID: 997737902}
   _menu: {fileID: 1798974026}
   _playingUI: {fileID: 344906088}
+  _shipSpecificationsDisplay: {fileID: 2008441514}
 --- !u!1 &805213384
 GameObject:
   m_ObjectHideFlags: 0

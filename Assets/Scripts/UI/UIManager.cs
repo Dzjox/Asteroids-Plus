@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using AsteroidsPlus.Logic;
 using System.Threading.Tasks;
@@ -10,19 +9,22 @@ namespace AsteroidsPlus.UI
 		[SerializeField] private GameStart _gameStart;
 		[SerializeField] private GameObject _menu;
 		[SerializeField] private GameObject _playingUI;
+		[SerializeField] private ShipSpecificationsDisplay _shipSpecificationsDisplay;
 
 		private void Awake()
 		{
-			TryGetGameStatusAtion();
+			TryGetValues();
 		}
 
-		private async void TryGetGameStatusAtion()
+		private async void TryGetValues()
 		{
-			while (_gameStart.GameState == null)
+			while (_gameStart.GameState == null 
+				&& _gameStart.RoundsLogic == null)
 			{
 				await Task.Delay(1);
 			}
 			_gameStart.GameState.StateChange += OnGameStateChange;
+			_shipSpecificationsDisplay.SetRoundsLogic(_gameStart.RoundsLogic);
 		}
 
 		private void OnGameStateChange(GameState.State state)

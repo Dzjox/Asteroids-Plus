@@ -23,17 +23,17 @@ namespace AsteroidsPlus.Logic
 
 		public static Action<int> ScoreChange;
 
-		public ScoreSystem()
+		public ScoreSystem( GameState gameState)
 		{
-			//RoundsLogic.ChangeStatus += OnChangeStatus;
+			gameState.StateChange += OnStateChange;
 			Asteroid.AsteroidDestroyed += OnAsteroidDestroyed;
 			UFO.UFODestroyed += OnUFODestroyed;
 		}
 
-		//private void OnChangeStatus(RoundsLogic.Status status)
-		//{
-		//	if (status == RoundsLogic.Status.Playing || status == RoundsLogic.Status.Idle) Score = 0;
-		//}
+		private void OnStateChange(GameState.State state)
+		{
+			if (state == GameState.State.StartIdle || state == GameState.State.Playing) Score = 0;
+		}
 
 		private void OnAsteroidDestroyed()
 		{

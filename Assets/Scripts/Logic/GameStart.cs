@@ -8,7 +8,7 @@ namespace AsteroidsPlus.Logic
 		[SerializeField] private SettingScriptableObject _settings = null;
 
 		private InputSystem _inputSystem;
-		private RoundsLogic _roundsLogic;
+		public RoundsLogic RoundsLogic { get; private set; }
 		public GameState GameState { get; private set; }
 
 		private void Awake()
@@ -19,9 +19,9 @@ namespace AsteroidsPlus.Logic
 			_inputSystem.Menu.Enable();
 
 			GameState = new GameState(_inputSystem);
-			_roundsLogic = new RoundsLogic(GameState);
+			RoundsLogic = new RoundsLogic(GameState);
 
-			new ScoreSystem();
+			new ScoreSystem(GameState);
 		}
 
 		private void Start()
