@@ -2,14 +2,14 @@ using AsteroidsPlus.Core;
 using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
-using Object = UnityEngine.Object;
-
+using System.Threading.Tasks;
 
 namespace AsteroidsPlus.SpaceObjects.Spawner
 {
 	public class AsteroidsSpawner
 	{
-		private Action _destoryAllAsteroids;
+		public Action _destoryAllAsteroids;
+		private bool _spawnAseroids;
 
 		public void Spawn(Vector2 shipPostion, int asteroidsCount)
 		{
@@ -26,18 +26,44 @@ namespace AsteroidsPlus.SpaceObjects.Spawner
 					Random.Range(minY, maxY) + shipPostion.y,
 					0);
 
-					Object.Instantiate(Data.Instance().Settings.AsteroidPrefab, asteroidPostion, Quaternion.identity)
+					GameObject.Instantiate(Data.Instance().Settings.AsteroidPrefab, asteroidPostion, Quaternion.identity)
 					.GetComponent<Asteroid>()
-					.Launch(asteroidPostion, _destoryAllAsteroids);
+					.Launch(asteroidPostion, this);
 			}
 		}
 
-		public void SpawnMini(Vector2 asteroidPostion, int asteroidsCount, Action destoryAllAsteroids, float scale = 0.3f)
+		public async void SpawnInTime(Transform player)
+		{
+			_spawnAseroids = true;
+			int count = 0;
+			int asteroidsCount = 0;
+			var data = Data.Instance().Settings;
+			asteroidsCount = data.AsteroidsInFirstRound + (int)(count * data.AsteroidsCountWithTime);
+			Spawn(player.position, asteroidsCount);
+
+			while (_spawnAseroids)
+			{
+				await Task.Delay(TimeSpan.FromSeconds(data.AsteroidsArrivalTime));
+				if (_spawnAseroids)
+				{
+					asteroidsCount = data.AsteroidsInFirstRound + (int)(count * data.AsteroidsCountWithTime);
+					Spawn(player.position, asteroidsCount);
+					count++;
+				}
+			}
+		}
+
+		public void StopSpawnInTime ()
+		{
+			_spawnAseroids = false;
+		}
+
+		public void SpawnMini(Vector2 asteroidPostion, int asteroidsCount, AsteroidsSpawner asteroidsSpawner, float scale = 0.3f)
 		{
 			for (int i = 0; i < asteroidsCount; i++)
 			{
-				var asteroid = Object.Instantiate(Data.Instance().Settings.AsteroidPrefab, asteroidPostion, Quaternion.identity);
-				asteroid.GetComponent<Asteroid>().Launch(asteroidPostion , destoryAllAsteroids);
+				var asteroid = GameObject.Instantiate(Data.Instance().Settings.AsteroidPrefab, asteroidPostion, Quaternion.identity);
+				asteroid.GetComponent<Asteroid>().Launch(asteroidPostion , asteroidsSpawner);
 				asteroid.transform.localScale *= scale;
 				asteroid.tag = "MiniAsteroid";
 			}
@@ -47,6 +73,5 @@ namespace AsteroidsPlus.SpaceObjects.Spawner
 		{
 			_destoryAllAsteroids?.Invoke();
 		}
-
 	}
 }

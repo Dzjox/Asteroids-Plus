@@ -2,95 +2,62 @@ using AsteroidsPlus.Core;
 using AsteroidsPlus.SpaceObjects;
 using AsteroidsPlus.SpaceObjects.Spawner;
 using System;
-using System.Collections;
 using UnityEngine;
-using Object = UnityEngine.Object;
 
 namespace AsteroidsPlus.Logic
 {
 	public class RoundsLogic
 	{
-		public enum Status
-		{
-			Idle,
-			Playing,
-			ShipDestroyed
-		}
-
-		public static Action<Status> ChangeStatus;
-
-		private InputSystem _inputActions;
 		private AsteroidsSpawner _asteridsSpawner;
 		private UFOSpawner _UFOSpawner;
 		private Transform _player;
-		private Coroutine _steroidsSpawnCoroutine;
-		private Coroutine _UFOSpawnCoroutine;
 
-		public RoundsLogic()
+		public RoundsLogic(GameState gameState)
 		{
-			_inputActions = new InputSystem();
-			_inputActions.Menu.Enable();
-			_inputActions.Menu.PressAnyKey.performed += OnPressAnyKey;
-
 			_asteridsSpawner = new AsteroidsSpawner();
-			_asteridsSpawner.Spawn(Vector2.zero, Data.Instance().Settings.AsteroidsInFirstRound);
-
 			_UFOSpawner = new UFOSpawner();
 
-			ChangeStatus?.Invoke(Status.Idle);
+			gameState.StateChange += OnGameStateChange;
+
+			_asteridsSpawner.Spawn(Vector2.zero, Data.Instance().Settings.AsteroidsInFirstRound);
 		}
 
-		private void OnPressAnyKey(UnityEngine.InputSystem.InputAction.CallbackContext context)
+		private void OnGameStateChange(GameState.State state)
 		{
-			_inputActions.Menu.PressAnyKey.performed -= OnPressAnyKey;
-			StartPlaying();
+			switch (state)
+			{
+				case GameState.State.StartIdle:
+					StartIdle();
+					break;
+				case GameState.State.Playing:
+					Playing();
+					break;
+				case GameState.State.RoundEnd:
+					RoundEnd();
+					break;
+			}
 		}
 
-		private void StartPlaying()
+		private void StartIdle()
+		{
+			_asteridsSpawner.Spawn(Vector2.zero, Data.Instance().Settings.AsteroidsInIdle);
+		}
+
+		private void Playing()
 		{
 			_asteridsSpawner.Clear();
 			_UFOSpawner.Clear();
-			SpawnPlayer();
-			_asteridsSpawner.Spawn(_player.position, Data.Instance().Settings.AsteroidsInFirstRound);
-			_steroidsSpawnCoroutine = Coroutiner.Instance.DoCoroutine(SpawnAsteroidsInTime());
-			_UFOSpawnCoroutine = Coroutiner.Instance.DoCoroutine(SpawnUFOInTime());
-			ChangeStatus?.Invoke(Status.Playing);
+
+			_player = GameObject.Instantiate(Data.Instance().Settings.ShipPrefab).transform;
+
+			_asteridsSpawner.SpawnInTime(_player);
+			_UFOSpawner.SpawnInTime(_player);
 		}
 
-
-		private void SpawnPlayer()
+		private void RoundEnd()
 		{
-			var ship = Object.Instantiate(Data.Instance().Settings.ShipPrefab).GetComponent<Ship>();
-			_player = ship.transform;
-			ship.ShipDestroyed += OnShipDestroyed;
-		}
-
-		private void OnShipDestroyed()
-		{
-			Coroutiner.Instance.StopDoCoroutine(_steroidsSpawnCoroutine);
-			Coroutiner.Instance.StopDoCoroutine(_UFOSpawnCoroutine);
-			_inputActions.Menu.PressAnyKey.performed += OnPressAnyKey;
-			ChangeStatus?.Invoke(Status.ShipDestroyed);
-		}
-
-		private IEnumerator SpawnAsteroidsInTime()
-		{
-			int asteroidsCount = 20;
-			do
-			{
-				yield return new WaitForSeconds(Data.Instance().Settings.AsteroidsArrivalTime);
-				_asteridsSpawner.Spawn(_player.position, asteroidsCount / 10);
-				asteroidsCount++;
-			} while (true);
-		}
-
-		private IEnumerator SpawnUFOInTime()
-		{
-			do
-			{
-				yield return new WaitForSeconds(Data.Instance().Settings.UFOSpawnTime);
-				_UFOSpawner.Spawn(_player);
-			} while (true);
+			_asteridsSpawner.StopSpawnInTime();
+			_UFOSpawner.StopSpawnInTime();
 		}
 	}
 }

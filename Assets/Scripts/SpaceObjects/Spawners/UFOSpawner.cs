@@ -2,13 +2,14 @@ using AsteroidsPlus.Core;
 using System;
 using UnityEngine;
 using Random = UnityEngine.Random;
-using Object = UnityEngine.Object;
+using System.Threading.Tasks;
 
 namespace AsteroidsPlus.SpaceObjects.Spawner
 {
 	public class UFOSpawner
 	{
-		private static Action DestoryAllUFO;
+		public Action DestoryAllUFO;
+		private bool _spawnUFO;
 
 		public void Spawn(Transform player)
 		{
@@ -23,10 +24,27 @@ namespace AsteroidsPlus.SpaceObjects.Spawner
 				Random.Range(minY, maxY) + player.position.y,
 				0);
 
-			Object.Instantiate(Data.Instance().Settings.UFOPrefab, UFOPostion, Quaternion.identity)
+			GameObject.Instantiate(Data.Instance().Settings.UFOPrefab, UFOPostion, Quaternion.identity)
 				.GetComponent<UFO>()
-				.Launch(UFOPostion, player, DestoryAllUFO);
+				.Launch(UFOPostion, player, this);
 
+		}
+
+		public async void SpawnInTime(Transform player)
+		{
+			_spawnUFO = true;
+
+			while (_spawnUFO)
+			{
+				await Task.Delay(TimeSpan.FromSeconds(Data.Instance().Settings.UFOSpawnTime));
+				if (_spawnUFO)
+					Spawn(player);
+			}
+		}
+
+		public void StopSpawnInTime()
+		{
+			_spawnUFO = false;
 		}
 
 		public void Clear()

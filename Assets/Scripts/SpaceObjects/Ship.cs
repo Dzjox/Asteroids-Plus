@@ -17,7 +17,7 @@ namespace AsteroidsPlus.SpaceObjects
 		public Component MainWeapon;
 		public Component UltimateWeapon;
 
-		public event Action ShipDestroyed;
+		public static event Action ShipDestroyed;
 
 		public ShipMovement Movement { get { return _shipMovement; } }
 

@@ -11,11 +11,11 @@ namespace AsteroidsPlus.SpaceObjects
 	{
 		private SpaceObjectMovement _movemet = null;
 		private BorderTeleport _borderTeleport = null;
-		private Action _destoryAllAsteroids;
+		private AsteroidsSpawner _asteroidsSpawner;
 
 		public static Action AsteroidDestroyed;
 
-		public Asteroid Launch(Vector2 startPosition, Action DestoryAllAsteroids)
+		public Asteroid Launch(Vector2 startPosition, AsteroidsSpawner asteroidsSpawner)
 		{
 			_movemet = new SpaceObjectMovement(
 				startPosition,
@@ -24,8 +24,8 @@ namespace AsteroidsPlus.SpaceObjects
 
 			_borderTeleport = new BorderTeleport(_movemet);
 
-			_destoryAllAsteroids = DestoryAllAsteroids;
-			_destoryAllAsteroids += OnDestoryAllAsteroids;
+			_asteroidsSpawner = asteroidsSpawner;
+			_asteroidsSpawner._destoryAllAsteroids += OnDestoryAllAsteroids;
 
 			return this;
 		}
@@ -63,16 +63,15 @@ namespace AsteroidsPlus.SpaceObjects
 
 		private void OnDestroy()
 		{
-			_destoryAllAsteroids -= OnDestoryAllAsteroids;
+			_asteroidsSpawner._destoryAllAsteroids -= OnDestoryAllAsteroids;
 		}
 
 		private void SpawnsMiniAsteroids()
 		{
-			new AsteroidsSpawner()
-				.SpawnMini(
+			_asteroidsSpawner.SpawnMini(
 					transform.position,
 					Data.Instance().Settings.MiniAsteroidsCount,
-					_destoryAllAsteroids,
+					_asteroidsSpawner,
 					Data.Instance().Settings.MiniAsteroidsScale);
 		}
 	}

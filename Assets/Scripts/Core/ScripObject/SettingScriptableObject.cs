@@ -30,8 +30,10 @@ namespace AsteroidsPlus.ScripObject
         [Header("Asteroids")]
         public GameObject AsteroidPrefab;
         public float AsteroidsMaxSpeed = 3;
-        public int AsteroidsInFirstRound = 5;
-        public int AsteroidsArrivalTime = 5;
+        public int AsteroidsInIdle = 10;
+        public int AsteroidsInFirstRound = 2;
+        public float AsteroidsArrivalTime = 5;
+        public float AsteroidsCountWithTime = 0.1f;
         public float AsteroidsSafeZoneRadius = 1.5f;
         [Header("MiniAsteroids")]
         public int MiniAsteroidsCount = 3;
