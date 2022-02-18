@@ -22,13 +22,13 @@ namespace AsteroidsPlus.SpaceObjects.Movement
 			_speed = speed;
 
 			var forwardVector = (Quaternion.Euler(0, 0, _rotation) * Vector2.up).normalized;
-			_inertiaVector = forwardVector * _speed * Time.fixedDeltaTime;
+			_inertiaVector = forwardVector * _speed;
 		}
 
-		public void MoveFixedUpdate(Transform movedTranform)
+		public void MoveUpdate(Transform movedTranform)
 		{
-			_speed = _inertiaVector.magnitude / Time.fixedDeltaTime;
-			_position += _inertiaVector;
+			_speed = _inertiaVector.magnitude;
+			_position += _inertiaVector * Time.deltaTime;
 			movedTranform.position = _position;
 		}
 

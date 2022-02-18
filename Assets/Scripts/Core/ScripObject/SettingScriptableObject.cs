@@ -10,9 +10,9 @@ namespace AsteroidsPlus.ScripObject
         public Vector2 ShipStartPosiotion = Vector2.zero;
         public float ShipStartRotation = 0;
         public float ShipStartSpeed = 0;
-        public float ShipAcceleration = 0.25f;
-        public float ShipRotationSpeed = 100;
-        public float ShipMaxSpeed = 5;
+        public float ShipAcceleration = 5;
+        public float ShipRotationSpeed = 150;
+        public float ShipMaxSpeed = 100;
         [Header("Cannon")]
         public float CannonDelayTime = 0.05f;
         [Header("Missle")]

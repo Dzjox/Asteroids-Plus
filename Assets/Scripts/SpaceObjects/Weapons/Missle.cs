@@ -22,11 +22,11 @@ namespace AsteroidsPlus.Weapon
 			_destroyTime = Time.time + Data.Instance().Settings.MissleFlyTime;
 		}
 
-		private void FixedUpdate()
+		private void Update()
 		{
 			if (_movemet != null)
 			{
-				_movemet.MoveFixedUpdate(transform);
+				_movemet.MoveUpdate(transform);
 				if (_destroyTime < Time.time) Destroy(this.gameObject);				
 			}
 

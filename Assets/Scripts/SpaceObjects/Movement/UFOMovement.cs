@@ -9,11 +9,11 @@ namespace AsteroidsPlus.SpaceObjects.Movement
 		private Vector2 _beastWay;
 		public UFOMovement(Vector2 position, float rotation, float speed) : base(position, rotation, speed) { }
 
-		public void MoveFixedUpdate(Transform UFO, Transform player)
+		public void MoveUpdate(Transform UFO, Transform player)
 		{
 			FindBestWayWithTeleport(player);
-			_inertiaVector = _beastWay.normalized * _speed * Time.fixedDeltaTime;
-			base.MoveFixedUpdate(UFO);
+			_inertiaVector = _beastWay.normalized * _speed;
+			base.MoveUpdate(UFO);
 		}
 
 		private void FindBestWayWithTeleport(Transform player)

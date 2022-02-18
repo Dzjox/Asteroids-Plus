@@ -16,28 +16,30 @@ MonoBehaviour:
   ShipStartPosiotion: {x: 0, y: 0}
   ShipStartRotation: 0
   ShipStartSpeed: 0
-  ShipAcceleration: 0.1
-  ShipRotationSpeed: 200
-  ShipMaxSpeed: 5
-  CannonDelayTime: 0.08
+  ShipAcceleration: 5
+  ShipRotationSpeed: 150
+  ShipMaxSpeed: 6
+  CannonDelayTime: 0.1
   MisslePrefab: {fileID: 7351417875188655157, guid: 260b4d19074800f4786c6aa6a0f3978f, type: 3}
   MissleSpeed: 10
   MissleFlyTime: 1
   LaserMaxCharges: 3
   LaserAddChargeTime: 10
   LaserBeamPrefab: {fileID: 5560037835304666760, guid: f4c55b07b2eb166418225462db066534, type: 3}
-  LaserBeamTime: 0.5
+  LaserBeamTime: 1
   LaserBeamLengthScale: 10
   LaserBeamOffset: {x: 0, y: 13, z: 0}
   AsteroidPrefab: {fileID: 8294391290080311338, guid: bb9e42488ee857a4db862c563e15eb18, type: 3}
-  AsteroidsMaxSpeed: 2
-  AsteroidsInFirstRound: 7
+  AsteroidsMaxSpeed: 2.5
+  AsteroidsInIdle: 10
+  AsteroidsInFirstRound: 2
   AsteroidsArrivalTime: 5
-  AsteroidsSafeZoneRadius: 3
+  AsteroidsCountWithTime: 0.1
+  AsteroidsSafeZoneRadius: 1.5
   MiniAsteroidsCount: 3
   MiniAsteroidsScale: 0.3
   "ScoreAsteroidPri\u0441e": 120
   "ScoreUFOPri\u0441e": 300
   UFOPrefab: {fileID: 7504767384534445215, guid: 5d37105813d54e6448dfc2b2bdf4b867, type: 3}
-  UFOSpeed: 2
+  UFOSpeed: 1
   UFOSpawnTime: 10

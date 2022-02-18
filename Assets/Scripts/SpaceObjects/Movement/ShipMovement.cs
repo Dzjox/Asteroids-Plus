@@ -28,23 +28,23 @@ namespace AsteroidsPlus.SpaceObjects.Movement
 		}
 
 
-		public void MoveFixedUpdate(
-			Transform movedTranform,
+		public void MoveUpdate(
+			Transform movedTranform,			
 			bool moveForward = false,
 			bool turnRight = false,
 			bool turnLeft = false)
 		{
-			if (turnRight) _rotation -= _rotationSpeed * Time.fixedDeltaTime;
-			if (turnLeft) _rotation += _rotationSpeed * Time.fixedDeltaTime;
+			if (turnRight) _rotation -= _rotationSpeed * Time.deltaTime;
+			if (turnLeft) _rotation += _rotationSpeed * Time.deltaTime;
 			movedTranform.rotation = Quaternion.Euler(0, 0, _rotation);
 
 			Vector2 forwardVector = (Quaternion.Euler(0, 0, _rotation) * Vector2.up).normalized;
-			if (moveForward) _inertiaVector += forwardVector * _acceleration * Time.fixedDeltaTime;
+			if (moveForward) _inertiaVector += forwardVector * _acceleration * Time.deltaTime;
 
 			//Speed limit
-			if (_inertiaVector.sqrMagnitude > _maxSpeed * Time.fixedDeltaTime) _inertiaVector = _inertiaVector.normalized * _maxSpeed * Time.fixedDeltaTime;
+			if (_inertiaVector.magnitude > _maxSpeed) _inertiaVector = _inertiaVector.normalized * _maxSpeed;
 
-			base.MoveFixedUpdate(movedTranform);
+			base.MoveUpdate(movedTranform);
 		}
 
 	}

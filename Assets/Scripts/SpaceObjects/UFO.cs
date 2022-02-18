@@ -25,10 +25,10 @@ namespace AsteroidsPlus.SpaceObjects
 			_uFOSpawner.DestoryAllUFO += OnDestoryAllUFO;
 		}
 
-		private void FixedUpdate()
+		private void Update()
 		{
 			if (_movemet != null)
-				_movemet.MoveFixedUpdate(transform,_player);
+				_movemet.MoveUpdate(transform,_player);
 
 			if (_borderTeleport != null)
 				if (_borderTeleport.Check())

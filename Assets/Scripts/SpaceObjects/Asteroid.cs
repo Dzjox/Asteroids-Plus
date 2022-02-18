@@ -30,10 +30,10 @@ namespace AsteroidsPlus.SpaceObjects
 			return this;
 		}
 
-		private void FixedUpdate()
+		private void Update()
 		{
 			if (_movemet != null) 
-				_movemet.MoveFixedUpdate(transform);
+				_movemet.MoveUpdate(transform);
 
 			if (_borderTeleport!=null) 
 				if (_borderTeleport.Check()) 

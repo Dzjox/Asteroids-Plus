@@ -34,9 +34,9 @@ namespace AsteroidsPlus.SpaceObjects
 			_ultimateWeapon = (IWeaponSystem)UltimateWeapon;
 		}
 
-		private void FixedUpdate()
+		private void Update()
 		{
-			_shipMovement.MoveFixedUpdate(
+			_shipMovement.MoveUpdate(
 				transform,
 				_inputActions.Ship.MoveForward.IsPressed(),
 				_inputActions.Ship.TurnRight.IsPressed(),
